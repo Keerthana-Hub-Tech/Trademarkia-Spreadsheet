@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from './firebaseConfig'; 
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { auth, provider } from './firebaseConfig';
+import { signInWithPopup, User, onAuthStateChanged, signOut } from 'firebase/auth';
 
 // This Interface tells TypeScript exactly what a "Cell" looks like.
 // This fixes the 'any' errors you saw.
@@ -51,6 +53,23 @@ const evaluateFormula = (input: string, gridData: CellData[][]) => {
 };
 
 export default function Spreadsheet() {
+  const [user, setUser] = useState<User | null>(null);
+
+// This "Listener" detects if you are logged in or out automatically
+useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+  return () => unsub();
+}, []);
+
+const handleLogin = async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (err) {
+    console.error("Auth Error:", err);
+  }
+};
   const [data, setData] = useState<CellData[][]>(
     Array.from({ length: ROWS }, () => Array(COLS).fill({ value: "", bold: false, italic: false, color: "#000000" }))
   );
@@ -96,17 +115,36 @@ export default function Spreadsheet() {
             <h1 className="font-bold text-lg">Trademarkia Sheets Pro</h1>
             <p className="text-[10px] text-slate-400 uppercase tracking-widest">Real-time Frontend Assignment</p>
           </div>
+          
           <div className="flex items-center gap-4">
-             {isSaving ? <span className="text-xs text-blue-400 animate-pulse">Saving...</span> : <span className="text-xs text-emerald-400">● Synced</span>}
-             <button onClick={() => {
-                const csv = data.map(row => row.map(c => c.value).join(",")).join("\n");
-                const blob = new Blob([csv], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'sheet.csv';
-                a.click();
-             }} className="bg-emerald-600 hover:bg-emerald-700 px-3 py-1 rounded text-xs transition-colors">Export CSV</button>
+            {/* User Identity Section */}
+            {user ? (
+              <div className="flex items-center gap-3 bg-slate-800 py-1 px-3 rounded-full border border-slate-700">
+                <img src={user.photoURL || ""} alt="avatar" className="w-6 h-6 rounded-full" />
+                <span className="text-xs font-medium">{user.displayName}</span>
+                <button onClick={() => signOut(auth)} className="text-[10px] text-slate-400 hover:text-red-400">Logout</button>
+              </div>
+            ) : (
+              <button onClick={handleLogin} className="bg-white text-slate-900 px-4 py-1 rounded text-xs font-bold hover:bg-slate-200 transition-colors">
+                Login with Google
+              </button>
+            )}
+
+            <div className="h-6 w-[1px] bg-slate-700" />
+
+            {isSaving ? <span className="text-xs text-blue-400 animate-pulse">Saving...</span> : <span className="text-xs text-emerald-400">● Synced</span>}
+            
+            <button onClick={() => {
+              const csv = data.map(row => row.map(c => c.value).join(",")).join("\n");
+              const blob = new Blob([csv], { type: 'text/csv' });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'sheet.csv';
+              a.click();
+            }} className="bg-emerald-600 hover:bg-emerald-700 px-3 py-1 rounded text-xs transition-colors font-bold">
+              Export CSV
+            </button>
           </div>
         </div>
 
@@ -154,11 +192,11 @@ export default function Spreadsheet() {
                     return (
                       <td key={cIndex} className="border-r p-0 min-w-[140px]">
                         <input
-                          className="w-full h-10 px-3 outline-none text-sm transition-all text-black"
+                          className="w-full h-10 px-3 outline-none text-sm transition-all text-black font-medium"
                           style={{ 
                             fontWeight: cell.bold ? 'bold' : 'normal', 
                             fontStyle: cell.italic ? 'italic' : 'normal',
-                            color: cell.color, // This applies the color from the RGB picker!
+                            color: cell.color,
                             backgroundColor: isFocused ? '#f0f9ff' : 'transparent'
                           }}
                           value={isFocused ? cell.value : evaluateFormula(cell.value, data)}
@@ -174,7 +212,7 @@ export default function Spreadsheet() {
           </table>
         </div>
       </div>
-      <p className="text-center mt-6 text-slate-400 text-xs">Developed by Keerthana V. for Trademarkia Internship</p>
+      <p className="text-center mt-6 text-slate-400 text-xs italic">Developed by Keerthana V. for Trademarkia Internship</p>
     </div>
   );
 }

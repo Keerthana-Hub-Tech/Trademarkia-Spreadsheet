@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth"; // Add these
 
 const firebaseConfig = {
   apiKey: "AIzaSyC3hEYvP6TTnzLm-nz0KHXAAFEWtNUGLQ",
@@ -10,8 +11,7 @@ const firebaseConfig = {
   appId: "1:523999143041:web:fd74d92e8c6d62de321980"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Export the database so page.tsx can see it
 export const db = getFirestore(app);
+export const auth = getAuth(app); // Export this for page.tsx
+export const provider = new GoogleAuthProvider(); // Export this for the login button
