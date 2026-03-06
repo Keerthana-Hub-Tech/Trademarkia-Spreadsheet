@@ -3,12 +3,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth"; // Add these
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC3hEYvP6TTnzLm-nz0KHXAAFEWEtNUGLQ",
-  authDomain: "trademarkia-spreadsheet.firebaseapp.com",
-  projectId: "trademarkia-spreadsheet",
-  storageBucket: "trademarkia-spreadsheet.firebasestorage.app",
-  messagingSenderId: "523999143041",
-  appId: "1:523999143041:web:fd74d92e8c6d62de321980"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
