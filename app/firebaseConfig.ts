@@ -3,7 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth"; // Add these
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC3hEYvP6TTnzLm-nz0KHXAAFEWtNUGLQ",
+  apiKey: "AIzaSyC3hEYvP6TTnzLm-nz0KHXAAFEWEtNUGLQ",
   authDomain: "trademarkia-spreadsheet.firebaseapp.com",
   projectId: "trademarkia-spreadsheet",
   storageBucket: "trademarkia-spreadsheet.firebasestorage.app",
