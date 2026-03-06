@@ -11,7 +11,7 @@ A lightweight, real-time collaborative spreadsheet built for the Trademarkia Fro
 ## 🔗 Links
 - **Live Demo**: [https://trademarkia-spreadsheet.vercel.app/]
 - **Demo Video**: [Link to your 2-3 min Loom/YouTube video]
-- 
+
 ## ✨ Features
 - **Real-time Sync**: Bi-directional data synchronization using Firestore `onSnapshot`.
 - **Advanced Presence**: Live avatar stack and remote cursors showing collaborator focus in real-time.
