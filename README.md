@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trademarkia Sheets Pro 📊
+A lightweight, real-time collaborative spreadsheet built for the Trademarkia Frontend Engineering Challenge.
 
-## Getting Started
+## 🚀 Tech Stack
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS
+- **Backend/Auth**: Firebase (Firestore & Google Auth)
+- **Deployment**: Vercel
 
-First, run the development server:
+## ✨ Features
+- **Real-time Sync**: Bi-directional data synchronization using Firestore `onSnapshot`.
+- **Advanced Presence**: Live avatar stack and remote cursors showing collaborator focus in real-time.
+- **Formula Engine**: Support for cell references and range functions (e.g., `=SUM(A1:B5)`).
+- **Bonus Implementation**: 
+  - Keyboard Navigation (Arrows, Enter, Tab).
+  - Cell Formatting (Bold, Italic, Color).
+  - Spreadsheet Export (CSV).
+  - Column Resizing.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠 Architecture Decisions
+- **State Management**: Local state is managed via React `useState`, while global collaborative state is persisted in Firestore. 
+- **Conflict Handling**: Used Firestore's atomic field updates to prevent "last-write-wins" issues on metadata while maintaining a flat document structure for cell data to minimize nested object contention.
+- **Presence Logic**: Implemented a unique UID filtering system to handle "ghost" sessions caused by improper socket disconnects, ensuring the active user count remains accurate.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Local Setup
+1. `npm install`
+2. Configure `.env.local` with Firebase credentials.
+3. `npm run dev`
